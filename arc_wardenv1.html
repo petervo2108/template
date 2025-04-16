@@ -1,0 +1,290 @@
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @page {
+        size: A4;
+        margin-top: 40px;
+        margin-right: 0px;
+        margin-left: 0px;
+        margin-bottom: 0;
+      }
+
+      table {
+        margin-left: -3px;
+      }
+
+      tr td {
+        font-size: 10pt;
+      }
+
+      @media print {
+        .pagebreak {
+          clear: both;
+          page-break-before: auto;
+          page-break-after: always;
+        }
+
+        .footer {
+          position: fixed;
+          width: 100%;
+          bottom: 0px;
+          max-width: 900px;
+          box-sizing: border-box;
+        }
+
+        .header {
+          max-width: 900px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+      }
+
+      .text-section p {
+        margin: 3px;
+        margin-left: 0;
+        font-size: 9pt;
+        text-align: justify;
+      }
+      .text-section table {
+        line-height: 10pt;
+      }
+
+      .text-section p table {
+        line-height: 10pt;
+      }
+
+      .text-section table tr > td {
+        vertical-align: top;
+      }
+
+      .text-section p table tr > td {
+        vertical-align: top;
+      }
+
+      .text-section p table tr > td:first-child {
+        width: 140px;
+      }
+
+      .text-section table tr > td:first-child {
+        width: 140px;
+      }
+    </style>
+  </head>
+  <body
+    style="
+      font-size: 10pt;
+      font-family: 'Montserrat', sans-serif;
+      -webkit-print-color-adjust: exact;
+      margin: 0;
+      padding: 0 48px;
+      padding-top: 60px;
+    "
+  >
+    <div style="max-width: 900px; margin: auto; background-color: white">
+      <div class="header">
+        <div style="overflow: hidden; clear: both; margin-bottom: 50px">
+          <strong
+            style="
+              font-size: 30pt;
+              font-variant: small-caps;
+              letter-spacing: 0.1em;
+            "
+            >Arc Warden</strong
+          >
+        </div>
+      </div>
+      <div style="display: grid; grid-template-areas: 'column1 column2'">
+        <div style="width: 200px" class="grid-item"></div>
+        <div class="grid-item">
+          <strong
+            style="
+              font-size: 20pt;
+              font-variant: small-caps;
+              letter-spacing: 0.3em;
+            "
+            >Invoice</strong
+          >
+          <br />
+          <br />
+          <div>
+            <strong>{{ billing.paying_entity_name }}</strong>
+          </div>
+          <div class="text-section">
+            {{ billing.billing_address_str | safe }}
+          </div>
+          <div
+            style="
+              margin-top: 12px;
+              overflow: hidden;
+              clear: both;
+              border-bottom: 1px solid #000000;
+            "
+          ></div>
+          {% if billing.issue_date %}
+          <div style="clear: both; margin-top: 12px">
+            <div style="width: 150px; float: left">Invoice Date:</div>
+            <div style="text-align: left">{{ billing.issue_date }}</div>
+          </div>
+          {% endif %} {% if billing.billing_no %}
+          <div style="clear: both">
+            <div style="width: 150px; float: left">Invoice Number:</div>
+            <div style="text-align: left">{{ billing.billing_no }}</div>
+          </div>
+          {% endif %} <br />
+          <br />
+          <div style="margin-top: 10px; margin-bottom: 5px">
+            <strong style="font-variant: small-caps; font-size: 11pt"
+              >Professional Services</strong
+            >
+          </div>
+          <table style="width: 100%">
+            <tr>
+              <td>{{billing.narrative_text | safe }}</td>
+              <td></td>
+              <td>{{billing.currency}}</td>
+              <td style="text-align: right; width: 20%">
+                {{ billing.total_narrative_incl_vat_str }}
+              </td>
+            </tr>
+            {% if billing.cost_amount != 0 %}
+            <tr>
+              <td>{{ billing.disbursement_text | safe }}</td>
+              <td></td>
+              <td>{{billing.currency}}</td>
+              <td style="text-align: right; width: 20%">
+                {{billing.cost_total_str}}
+              </td>
+            </tr>
+            {% endif %}
+            <tr style="height: 20px"></tr>
+            <tr>
+              <td colspan="2" style="text-align: right; padding-right: 32px">
+                <strong>TOTAL AMOUNT DUE</strong>
+              </td>
+              <td>
+                <strong>{{billing.currency}}</strong>
+              </td>
+              <td style="text-align: right; width: 20%">
+                <strong>{{billing.total_amount_str}}</strong>
+              </td>
+            </tr>
+          </table>
+          <div style="height: 120px"></div>
+          {% if bank and bank.detail and bank.detail_length > 0 %}
+          <div style="clear: both" class="text-section">
+            {{ bank.detail | safe }}
+          </div>
+          {% endif %}
+          <div style="margin-top: 6px" class="text-section">
+            {{ billing.template_note | safe }}
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <div
+          style="
+            margin-bottom: 50px;
+            overflow: hidden;
+            clear: both;
+            border-bottom: 1px solid #000000;
+          "
+        ></div>
+      </div>
+    </div>
+    <h3 style="text-align: center;">TIME NARRATIVE</h3>
+                </div>
+                <table style="width: 100%; font-size: 10pt; border-spacing: 0 8px; border-spacing: 0 4px; padding: 0 48px;">
+                  <col width="100px" />
+                  <col width="100px" />
+                  <col />
+                  <col width="100px" />
+                  <thead>
+                    <tr style="background-color: #cecece; height: 24px">
+                      <th style="text-align: left; padding-left: 12px"> Date </th>
+                      <th style="text-align: left"> Professional </th>
+                      <th style="text-align: left"> Description of Services Rendered </th>
+                      <th style="text-align: right; padding-right: 12px"> Time (hours)</th>
+                    </tr>
+                  </thead> {% for matter in matters %} {% if matter.timesheets and matter.timesheets|length > 0 %} {% for timesheet in matter.timesheets %} <tr>
+                    <td style="padding-left: 12px">{{timesheet.logged_date_formated}}</td>
+                    <td>{{timesheet.logged_user_name}}</td>
+                    <td>{{timesheet.narrative | safe}}</td>
+                    <td style="text-align: right; padding-right: 12px">{{timesheet.logged_time_hour}}</td>
+                  </tr> {% endfor %} {% endif %} {% endfor %}
+                </table>
+              </div>
+              <div class="pagebreak"></div>
+              <div style="margin-bottom: 18px; text-align: center;">
+                <h3 style="text-transform: uppercase">SUMMARY</h3>
+              </div>
+              <table style="width: 100%; font-size: 10pt; border-spacing: 0 8px; border-spacing: 0 4px; padding: 0 48px;">
+                <thead>
+                  <tr style="background-color: #cecece; height: 24px">
+                    <th style="text-align: left; padding-left: 12px"> Professional </th>
+                    <th style="text-align: left"> Time (hours)</th>
+                    <th style="text-align: left"> Rate ({{billing.currency}}/h)</th>
+                    <th style="text-align: right; padding-right: 12px"> Amount ({{billing.currency}}) </th>
+                  </tr>
+                </thead> {% for ts_logged in billing.ts_logged_users %} <tr>
+                  <td style="padding-left: 12px">{{ts_logged.logged_user_name}}</td>
+                  <td>{{ts_logged.logged_time_hour}}</td>
+                  <td>{{ts_logged.hourly_rate}}</td>
+                  <td style="text-align: right; padding-right: 12px">{{ts_logged.amount_str}}</td>
+                </tr> {% endfor %} <tr style="font-weight: bold">
+                  <td style="padding-left: 12px">TOTAL</td>
+                  <td>{{ billing.total_logged_time_hour }}</td>
+                  <td colspan="2" style="text-align: right; padding-right: 12px">{{ billing.total_ts_amount }}</td>
+                </tr>
+              </table>
+            </div>{% if billing.show_cost_narrative and disbursements|length > 0 or fixed_costs|length > 0 %}
+            <div class="pagebreak"></div>
+            <div style="max-width: 900px; margin: auto; background-color: white;">
+              <div style="margin-bottom: 18px; text-align: center;">
+                <h3 style="text-transform: uppercase">SUMMARY OF EXPENSES</h3>
+              </div>
+              <table style="width: 100%; font-size: 10pt; border-spacing: 0 8px; border-spacing: 0 4px; padding: 0 48px;">
+                <col width="100px" />
+                <col />
+                <col width="100px" />
+                <thead>
+                  <tr style="background-color: #cecece; height: 24px">
+                    <th style="text-align: left; padding-left: 12px"> Date </th>
+                    <th style="text-align: left"> Description </th>
+                    <th style="text-align: right; padding-right: 12px"> Amount ({{billing.currency}})</th>
+                  </tr>
+                </thead> {% for disbursement in disbursements %} <tr>
+                  <td style="padding-left: 12px">{{disbursement.logged_date_formated}}</td>
+                  <td>{{ disbursement.narrative | safe }}</td>
+                  <td style="text-align: right; padding-right: 12px">{{ disbursement.amount_str }}</td>
+                </tr> {% endfor %} {% for fixed_cost in fixed_costs %} <tr>
+                  <td style="padding-left: 12px">{{ fixed_cost.logged_date_formated }}</td>
+                  <td>{{ fixed_cost.narrative | safe }}</td>
+                  <td style="text-align: right; padding-right: 12px">{{ fixed_cost.amount_str }}</td>
+                </tr> {% endfor %} <tr style="font-weight: bold;">
+                  <td colspan="2">TOTAL</td>
+                  <td style="text-align: right; padding-right: 12px">{{ billing.cost_amount_str }}</td>
+                </tr>
+              </table>
+            </div>{% endif %} </div>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>
+            <div class="footer" style="page-break-inside: avoid;">
+              <div style="padding: 0 48px; position: relative">
+                <div style="text-transform: uppercase; margin-bottom: -10px;">
+                  <b>{{ entity.legal_name | safe}}</b>
+                </div>
+                <div style="width: 100%; margin-bottom: -10px;">
+                  <div>{{ entity.address | safe }}
+  </body>
+</html>
